@@ -82,10 +82,10 @@ class ParticleFilterHandler(object):
         # publish the current particle cloud.  This enables viewing particles in rviz.
         # self.particle_pub = rospy.Publisher("particlecloud", PoseArray, queue_size=10)
         self.particle_sub = rospy.Subscriber(
-            "particlecloud", PoseArray, self.scoring_particles
+            "tb3/particlecloud", PoseArray, self.scoring_particles
         )
         self.pose_pub = rospy.Publisher(
-            "initialpose", PoseWithCovarianceStamped, latch=True, queue_size=1
+            "tb3/initialpose", PoseWithCovarianceStamped, latch=True, queue_size=1
         )
 
         # enable listening for and broadcasting coordinate transforms
@@ -97,7 +97,7 @@ class ParticleFilterHandler(object):
         # Make a ros service call to the /static_map service to get a nav_msgs/OccupancyGrid map.
         # Then use OccupancyField to make the map object
 
-        robotMap = rospy.ServiceProxy("/static_map", GetMap)().map
+        robotMap = rospy.ServiceProxy("/tb3/static_map", GetMap)().map
         # self.occupancy_field = OccupancyField(robotMap)
         # print "OccupancyField initialized", self.occupancy_field
 
@@ -105,7 +105,7 @@ class ParticleFilterHandler(object):
 
     def generate_uniformly_on_map_with_ros(self):
 
-        self.service = rospy.ServiceProxy("global_localization", Empty)
+        self.service = rospy.ServiceProxy("/tb3/global_localization", Empty)
         self.service()
 
     def update_initial_pose(self, msg):
